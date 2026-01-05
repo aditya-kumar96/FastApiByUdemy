@@ -1,1 +1,32 @@
-{"P001": {"name": "book one", "author": "author one", "subject": "science"}, "P002": {"name": "book two", "author": "author two", "subject": "science"}, "P003": {"name": "book three", "author": "author three", "subject": "math"}, "P004": {"name": "book four", "author": "author four", "subject": "math"}, "P005": {"name": "book five", "author": "author five", "subject": "polity"}, "P006": {"name": "Book six", "author": "Author six", "subject": "polity"}}
+{
+    "P001": {
+        "name": "book one",
+        "author": "author one",
+        "subject": "science"
+    },
+    "P002": {
+        "name": "book two",
+        "author": "author two",
+        "subject": "science"
+    },
+    "P003": {
+        "name": "book three",
+        "author": "author three",
+        "subject": "math"
+    },
+    "P004": {
+        "name": "book four",
+        "author": "author four",
+        "subject": "math"
+    },
+    "P005": {
+        "name": "book five",
+        "author": "author five",
+        "subject": "polity"
+    },
+    "P006": {
+        "name": "Book six",
+        "author": "Author six",
+        "subject": "polity"
+    }
+}
