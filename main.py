@@ -20,8 +20,6 @@ def get_db():
 db_dependency = Annotated[Session,Depends(get_db)]
 
 
-        
-     
 #get all the todos         
 @app.get('/')
 def get_allTodo(db:db_dependency):
