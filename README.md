@@ -13,4 +13,5 @@ This branch is dedicated to the first Todo App in which we are connect with the 
  - create api to get all data
  - create api to get todo by id
  - create api to create todo
- 
+ - create api to update the todo
+ - create api to delete the todo
