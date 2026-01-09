@@ -1,6 +1,47 @@
-from fastapi import FastAPI
-import models
-from database import engine
+from fastapi import FastAPI,Depends,HTTPException,status,Path
+import models 
+from models import Todos
+from validations.TodoRequest import TodoRequest
+from database import engine,SesssionLocal
+from sqlalchemy.orm import Session
+from typing import Annotated
+
 app= FastAPI()
 
 models.Base.metadata.create_all(bind=engine)
+def get_db():
+    db = SesssionLocal()
+    
+    try:
+        yield db
+    finally:
+        db.close()
+
+db_dependency = Annotated[Session,Depends(get_db)]
+
+
+        
+     
+#get all the todos         
+@app.get('/')
+def get_allTodo(db:db_dependency):
+    return db.query(Todos).all()
+
+#get todo by todo_id
+@app.get('/todo/{todo_id}',status_code=status.HTTP_200_OK)
+async def getTodobyId(db:db_dependency,todo_id:int= Path(gt=0)):
+    todo_model = db.query(Todos).filter(Todos.id==todo_id ).first()
+    if todo_model is not None:
+        return todo_model
+    raise HTTPException(status_code=404,detail="Todo not Found")
+    
+
+#create todos
+@app.post('/createTodo',status_code=status.HTTP_201_CREATED)
+async def createTodo(db:db_dependency , todo_request:TodoRequest):
+    todo_model = Todos(**todo_request.dict())
+    
+    db.add(todo_model)
+    db.commit()
+    
+    

@@ -4,3 +4,13 @@ This branch is dedicated to the first Todo App in which we are connect with the 
  - Create database file to create connection for the db
  - Create Model.py which allow us to tell what kind of tables we are creating using sqlalchemy and integrate with our db , this will be the actual result which will be available in the database table
  - create main.py and integrate the Base and models and create a todos db 
+
+
+## Task Done
+
+ - create database using sqlalchemy
+ - get connection with the db
+ - create api to get all data
+ - create api to get todo by id
+ - create api to create todo
+ 
