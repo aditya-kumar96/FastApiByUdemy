@@ -47,3 +47,6 @@ async def create_user(db:db_dependency , user_request : CreateUser):
 async def getalluser(db:db_dependency):
    return db.query(Users).all()
 
+
+
+
