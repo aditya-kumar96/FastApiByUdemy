@@ -1,4 +1,4 @@
-from fastapi import APIRouter,Depends
+from fastapi import APIRouter,Depends,status
 from validations.UserRequest import CreateUser
 from models import Users
 from database import SesssionLocal
@@ -24,8 +24,9 @@ db_dependency = Annotated[Session, Depends(get_db)]
 bycrpt_context = CryptContext( schemes=["bcrypt"] , deprecated='auto')
 
 
-@router.post('/auth')
-async def create_user(user_request : CreateUser):
+#create user
+@router.post('/auth',status_code=status.HTTP_201_CREATED)
+async def create_user(db:db_dependency , user_request : CreateUser):
     user_model = Users(
         email = user_request.email,
         username = user_request.username,
@@ -35,6 +36,8 @@ async def create_user(user_request : CreateUser):
         hashed_password = bycrpt_context.hash(user_request.password),
         is_active = True
     )
+    db.add(user_model)
+    db.commit()
     return user_model
 
 
