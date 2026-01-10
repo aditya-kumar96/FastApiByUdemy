@@ -16,3 +16,9 @@ This branch is dedicated to the first Todo App in which we are connect with the 
  - create api to update the todo
  - create api to delete the todo
  - update the code
+ - setup the project structure 
+ - add validation folder 
+ - create routers using APIRouter
+ - create auth file for user 
+ - create class to validate user
+ - update the db name
