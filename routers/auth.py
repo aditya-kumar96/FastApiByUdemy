@@ -6,6 +6,7 @@ from passlib.context import CryptContext
 from typing import Annotated
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
+from jose import jwt
 
 
 router = APIRouter()
