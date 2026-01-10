@@ -5,7 +5,7 @@ from database import SesssionLocal
 from passlib.context import CryptContext
 from typing import Annotated
 from sqlalchemy.orm import Session
-
+from fastapi.security import OAuth2PasswordRequestForm
 
 
 router = APIRouter()
@@ -19,7 +19,16 @@ def get_db():
 
 
 db_dependency = Annotated[Session, Depends(get_db)]
+form_data = Annotated[OAuth2PasswordRequestForm,Depends()]
 
+def authenticate_user(username:str,password:str,db):
+    user = db.query(Users).filter(Users.username == username).first()
+    if not user:
+        return False
+    if not bycrpt_context.verify(password,user.hashed_password):
+        return False
+    return True
+    
 
 bycrpt_context = CryptContext( schemes=["bcrypt"] , deprecated='auto')
 
@@ -48,5 +57,10 @@ async def getalluser(db:db_dependency):
    return db.query(Users).all()
 
 
-
+@router.post("/token")
+async def login_for_access_token(form_data:form_data , db:db_dependency):
+    user = authenticate_user(form_data.username,form_data.password,db)
+    if not user:
+        return 'Failed Authentication'
+    return "Successfull Authentication"
 
