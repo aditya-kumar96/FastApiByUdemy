@@ -7,9 +7,16 @@ from typing import Annotated
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 from jose import jwt
+from datetime import timedelta,datetime,timezone
 
 
 router = APIRouter()
+
+SECRET_KEY = '32105308db36b2871246369dda1df3edef897a418ea3e4e35ad14a8917c7cfb5'
+ALGORITHM = 'HS256'
+
+
+
 def get_db():
     db = SesssionLocal()
 
@@ -28,10 +35,21 @@ def authenticate_user(username:str,password:str,db):
         return False
     if not bycrpt_context.verify(password,user.hashed_password):
         return False
-    return True
+    return user
     
 
 bycrpt_context = CryptContext( schemes=["bcrypt"] , deprecated='auto')
+
+#create access token
+def create_access_token(username:str,user_id:int,expires_delta:timedelta):
+    encode ={'sub':username,'id':user_id}
+    expires = datetime.now(timezone.utc) + expires_delta
+    encode.update({'exp':expires})
+    return jwt.encode(encode,SECRET_KEY,algorithm=ALGORITHM)
+
+    
+    
+
 
 
 #create user
@@ -62,7 +80,8 @@ async def getalluser(db:db_dependency):
 async def login_for_access_token(form_data:form_data , db:db_dependency):
     user = authenticate_user(form_data.username,form_data.password,db)
     if not user:
-        return 'Failed Authentication'
-    return "Successfull Authentication"
+         return 'Failed Authentication'
+    token = create_access_token(user.username,user.id,timedelta(minutes=20))
+    return token
 
 
