@@ -1,10 +1,26 @@
-from fastapi import APIRouter
+from fastapi import APIRouter,Depends
 from validations.UserRequest import CreateUser
 from models import Users
+from database import SesssionLocal
 from passlib.context import CryptContext
+from typing import Annotated
+from sqlalchemy.orm import Session
+
 
 
 router = APIRouter()
+def get_db():
+    db = SesssionLocal()
+
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+db_dependency = Annotated[Session, Depends(get_db)]
+
+
 bycrpt_context = CryptContext( schemes=["bcrypt"] , deprecated='auto')
 
 
