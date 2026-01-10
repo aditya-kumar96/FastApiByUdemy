@@ -24,3 +24,4 @@ This branch is dedicated to the first Todo App in which we are connect with the 
  - update the db name
  - created hashed password
  - create api to get all user
+ - create api to authenticate the login user
