@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Path
 
-from models import Todos
+from models import Todos,Users
 from validations.TodoRequest import TodoRequest, TodoCreate, TodoUpdate
 from database import SesssionLocal
 from sqlalchemy.orm import Session
@@ -47,3 +47,18 @@ async def delete_to_byAdmin(user: user_dependency, db: db_dependency, todo_id: i
         "data":todo_model,
         "message": "todo deleted"
         }
+
+@router.delete('/delete/{user_id}',status_code=status.HTTP_200_OK)
+async def deleteUser(user:user_dependency,db:db_dependency,user_id:int):
+    if user is None or user.get('role')!='admin':
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail='not a admin')
+    user_detail = db.query(Users).filter(Users.id == user_id).first()
+    db.delete(user_detail)
+    db.commit()
+    return {
+        "status":status.HTTP_200_OK,
+        "data":user_detail,
+        "message": "user deleted"
+        
+    }
+    
