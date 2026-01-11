@@ -31,3 +31,10 @@ This branch is dedicated to the first Todo App in which we are connect with the 
  - create new user with role admin
  - delete todo by admin
  - delete user by admin
+
+
+
+
+ ### Create User
+  - create api to get current logged in user
+  - create api to change password
