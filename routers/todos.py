@@ -70,7 +70,7 @@ async def createTodo(
 
 
 # update the todo
-@router.put("/updatetodo/{todo_id}", status_code=status.HTTP_200_OK)
+@router.patch("/updatetodo/{todo_id}", status_code=status.HTTP_200_OK)
 async def updateTodo(
     user: user_dependency,
     db: db_dependency,
@@ -98,13 +98,15 @@ async def updateTodo(
 
     db.commit()
     db.refresh(todo_model)
-    return todo_model  
+    return todo_model
 
 
 # delete the todo
 @router.delete("/deletetodo/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def deleteTodo(db: db_dependency, todo_id: int = Path(gt=0)):
-    todo_model = db.query(Todos).filter(Todos.id == todo_id).first()
+async def deleteTodo(
+    user: user_dependency, db: db_dependency, todo_id: int = Path(gt=0)
+):
+    todo_model = db.query(Todos).filter(Todos.owner == user.get('id')).filter(Todos.id == todo_id).first()
     if todo_model is None:
         raise HTTPException(status_code=404, detail="Todo not found")
 
