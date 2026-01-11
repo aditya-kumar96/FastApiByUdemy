@@ -26,18 +26,29 @@ user_dependency = Annotated[dict, Depends(get_current_user)]
 
 # get all the todos
 @router.get("/")
-def get_allTodo(user:user_dependency,db: db_dependency):
+def get_allTodo(user: user_dependency, db: db_dependency):
     if user is None:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Authenticate first")
-    return db.query(Todos).filter(Todos.owner == user.get('id')).all()
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Authenticate first"
+        )
+    return db.query(Todos).filter(Todos.owner == user.get("id")).all()
 
 
 # get todo by todo_id
 @router.get("/{todo_id}", status_code=status.HTTP_200_OK)
-async def getTodobyId(user:user_dependency, db: db_dependency, todo_id: int = Path(gt=0)):
+async def getTodobyId(
+    user: user_dependency, db: db_dependency, todo_id: int = Path(gt=0)
+):
     if user is None:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Authenticate First")
-    todo_model = db.query(Todos).filter(Todos.owner == user.get('id')).filter(Todos.id == todo_id).first()
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Authenticate First"
+        )
+    todo_model = (
+        db.query(Todos)
+        .filter(Todos.owner == user.get("id"))
+        .filter(Todos.id == todo_id)
+        .first()
+    )
     if todo_model is not None:
         return todo_model
     raise HTTPException(status_code=404, detail="Todo not Found")
@@ -61,9 +72,22 @@ async def createTodo(
 # update the todo
 @router.put("/updatetodo/{todo_id}", status_code=status.HTTP_200_OK)
 async def updateTodo(
-    db: db_dependency, todo_request: TodoUpdate, todo_id: int = Path(gt=0)
+    user: user_dependency,
+    db: db_dependency,
+    todo_request: TodoUpdate,
+    todo_id: int = Path(gt=0),
 ):
-    todo_model = db.query(Todos).filter(Todos.id == todo_id).first()
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Authenticate first"
+        )
+
+    todo_model = (
+        db.query(Todos)
+        .filter(Todos.owner == user.get("id"))
+        .filter(Todos.id == todo_id)
+        .first()
+    )
     if todo_model is None:
         raise HTTPException(status_code=404, detail="Todo not found")
 
@@ -74,7 +98,7 @@ async def updateTodo(
 
     db.commit()
     db.refresh(todo_model)
-    return todo_model
+    return todo_model  
 
 
 # delete the todo
