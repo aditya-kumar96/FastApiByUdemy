@@ -25,3 +25,5 @@ This branch is dedicated to the first Todo App in which we are connect with the 
  - created hashed password
  - create api to get all user
  - create api to authenticate the login user
+ - create functions to validate the jwt token shared by client 
+ - create function to check the details shared in token is valid or not so allow to login into db
