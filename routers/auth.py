@@ -10,13 +10,16 @@ from jose import jwt,JWTError
 from datetime import timedelta, datetime, timezone
 
 
-router = APIRouter()
+router = APIRouter(
+    prefix='/auth',
+    tags=['auth']
+)
 
 SECRET_KEY = "32105308db36b2871246369dda1df3edef897a418ea3e4e35ad14a8917c7cfb5"
 ALGORITHM = "HS256"
 
 bycrpt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl='token')
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/token')
 
 
 def get_db():
@@ -68,7 +71,7 @@ async def get_current_user(token:Annotated[str,Depends(oauth2_bearer)]):
 
 
 # create user
-@router.post("/auth", status_code=status.HTTP_201_CREATED)
+@router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_user(db: db_dependency, user_request: CreateUser):
     user_model = Users(
         email=user_request.email,
@@ -96,6 +99,6 @@ async def getalluser(db: db_dependency):
 async def login_for_access_token(form_data: form_data, db: db_dependency):
     user = authenticate_user(form_data.username, form_data.password, db)
     if not user:
-        return "Failed Authentication"
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail='Could not validate user')
     token = create_access_token(user.username, user.id, timedelta(minutes=20))
     return {"access_token": token, "token_type": "Bearer"}

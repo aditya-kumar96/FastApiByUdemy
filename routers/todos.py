@@ -5,9 +5,10 @@ from validations.TodoRequest import TodoRequest, TodoCreate, TodoUpdate
 from database import SesssionLocal
 from sqlalchemy.orm import Session
 from typing import Annotated
+from .auth import get_current_user
 
 
-router = APIRouter()
+router = APIRouter(prefix="/todo", tags=["todo"])
 
 
 def get_db():
@@ -20,6 +21,7 @@ def get_db():
 
 
 db_dependency = Annotated[Session, Depends(get_db)]
+user_dependency = Annotated[dict, Depends(get_current_user)]
 
 
 # get all the todos
@@ -29,7 +31,7 @@ def get_allTodo(db: db_dependency):
 
 
 # get todo by todo_id
-@router.get("/todo/{todo_id}", status_code=status.HTTP_200_OK)
+@router.get("/{todo_id}", status_code=status.HTTP_200_OK)
 async def getTodobyId(db: db_dependency, todo_id: int = Path(gt=0)):
     todo_model = db.query(Todos).filter(Todos.id == todo_id).first()
     if todo_model is not None:
@@ -37,10 +39,16 @@ async def getTodobyId(db: db_dependency, todo_id: int = Path(gt=0)):
     raise HTTPException(status_code=404, detail="Todo not Found")
 
 
-# create todos
+# create todos with valid user
 @router.post("/createTodo", status_code=status.HTTP_201_CREATED)
-async def createTodo(db: db_dependency, todo_request: TodoCreate):
-    todo_model = Todos(**todo_request.dict())
+async def createTodo(
+    user: user_dependency, db: db_dependency, todo_request: TodoCreate
+):
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication Failed"
+        )
+    todo_model = Todos(**todo_request.dict(), owner=user.get("id"))
 
     db.add(todo_model)
     db.commit()
