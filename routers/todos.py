@@ -26,8 +26,10 @@ user_dependency = Annotated[dict, Depends(get_current_user)]
 
 # get all the todos
 @router.get("/")
-def get_allTodo(db: db_dependency):
-    return db.query(Todos).all()
+def get_allTodo(user:user_dependency,db: db_dependency):
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Authenticate first")
+    return db.query(Todos).filter(Todos.owner == user.get('id')).all()
 
 
 # get todo by todo_id
