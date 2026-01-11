@@ -27,3 +27,7 @@ This branch is dedicated to the first Todo App in which we are connect with the 
  - create api to authenticate the login user
  - create functions to validate the jwt token shared by client 
  - create function to check the details shared in token is valid or not so allow to login into db
+ - create api to read all todo by admin
+ - create new user with role admin
+ - delete todo by admin
+ - delete user by admin
