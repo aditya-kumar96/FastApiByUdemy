@@ -38,3 +38,7 @@ This branch is dedicated to the first Todo App in which we are connect with the 
  ### Create User
   - create api to get current logged in user
   - create api to change password
+
+
+### DBMS
+- we are integrating PostgreSQL in the app
