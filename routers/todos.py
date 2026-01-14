@@ -45,7 +45,7 @@ async def getTodobyId(
         )
     todo_model = (
         db.query(Todos)
-        .filter(Todos.owner == user.get("id"))
+        .filter(Todos.owner_id == user.get("id"))
         .filter(Todos.id == todo_id)
         .first()
     )
@@ -63,7 +63,7 @@ async def createTodo(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication Failed"
         )
-    todo_model = Todos(**todo_request.dict(), owner=user.get("id"))
+    todo_model = Todos(**todo_request.dict(), owner_id=user.get("id"))
 
     db.add(todo_model)
     db.commit()
@@ -84,7 +84,7 @@ async def updateTodo(
 
     todo_model = (
         db.query(Todos)
-        .filter(Todos.owner == user.get("id"))
+        .filter(Todos.owner_id == user.get("id"))
         .filter(Todos.id == todo_id)
         .first()
     )
@@ -106,7 +106,7 @@ async def updateTodo(
 async def deleteTodo(
     user: user_dependency, db: db_dependency, todo_id: int = Path(gt=0)
 ):
-    todo_model = db.query(Todos).filter(Todos.owner == user.get('id')).filter(Todos.id == todo_id).first()
+    todo_model = db.query(Todos).filter(Todos.owner_id == user.get('id')).filter(Todos.id == todo_id).first()
     if todo_model is None:
         raise HTTPException(status_code=404, detail="Todo not found")
 
