@@ -42,3 +42,4 @@ This branch is dedicated to the first Todo App in which we are connect with the 
 
 ### DBMS
 - we are integrating PostgreSQL in the app
+- having problem in connecting with database , so figuring out the root cause
