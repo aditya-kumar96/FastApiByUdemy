@@ -43,7 +43,7 @@ async def getuser(user: user_dependency, db: db_dependency):
         )
     return db.query(Users).filter(Users.id == user.get("id")).first()
 
-
+#change the password of user
 @router.patch("/change_password", status_code=status.HTTP_200_OK)
 async def changepassword(
     user: user_dependency, db: db_dependency, password_data: ChangePasswordRequest
