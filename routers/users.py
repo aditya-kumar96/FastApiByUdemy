@@ -34,7 +34,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def get_password_hashed(password: str) -> str:
     return bycrpt_context.hash(password)
 
-
+#get user
 @router.get("/", status_code=status.HTTP_200_OK)
 async def getuser(user: user_dependency, db: db_dependency):
     if user is None:
