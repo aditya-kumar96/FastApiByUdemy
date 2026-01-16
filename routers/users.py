@@ -12,7 +12,7 @@ from passlib.context import CryptContext
 
 router = APIRouter(prefix="/users", tags=["users"])
 
-
+#get the database
 def get_db():
     db = SesssionLocal()
 
