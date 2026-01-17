@@ -1,8 +1,8 @@
 """Create phone number for User column
 
-Revision ID: f80fa8d66374
-Revises: 
-Create Date: 2026-01-16 12:45:19.337821
+Revision ID: 56c5478f35eb
+Revises: f80fa8d66374
+Create Date: 2026-01-17 10:16:58.570136
 
 """
 from typing import Sequence, Union
@@ -12,17 +12,17 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'f80fa8d66374'
-down_revision: Union[str, Sequence[str], None] = None
+revision: str = '56c5478f35eb'
+down_revision: Union[str, Sequence[str], None] = 'f80fa8d66374'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
     """Upgrade schema."""
-    op.add_column('users',sa.Column('phone_number',sa.String(),nullable=True))
+    pass
 
 
 def downgrade() -> None:
     """Downgrade schema."""
-    # op.drop_column('users','phone_number')
+    pass

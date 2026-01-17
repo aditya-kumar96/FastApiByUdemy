@@ -82,6 +82,7 @@ async def create_user(db: db_dependency, user_request: CreateUser):
         role=user_request.role,
         hashed_password=bycrpt_context.hash(user_request.password),
         is_active=True,
+        phone_number = user_request.phone_number
     )
     db.add(user_model)
     db.commit()
