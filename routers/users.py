@@ -12,7 +12,8 @@ from passlib.context import CryptContext
 
 router = APIRouter(prefix="/users", tags=["users"])
 
-#get the database
+
+# get the database
 def get_db():
     db = SesssionLocal()
 
@@ -34,7 +35,8 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def get_password_hashed(password: str) -> str:
     return bycrpt_context.hash(password)
 
-#get user
+
+# get user
 @router.get("/", status_code=status.HTTP_200_OK)
 async def getuser(user: user_dependency, db: db_dependency):
     if user is None:
@@ -43,7 +45,8 @@ async def getuser(user: user_dependency, db: db_dependency):
         )
     return db.query(Users).filter(Users.id == user.get("id")).first()
 
-#change the password of user
+
+# change the password of user
 @router.patch("/change_password", status_code=status.HTTP_200_OK)
 async def changepassword(
     user: user_dependency, db: db_dependency, password_data: ChangePasswordRequest
@@ -70,3 +73,23 @@ async def changepassword(
     db.commit()
 
     return {"message": "Password changed successfully"}
+
+
+@router.put("/update_phonenumber", status_code=status.HTTP_200_OK)
+async def updatephonenumber(
+    user: user_dependency, db: db_dependency, phone_number: str
+):
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="please login first"
+        )
+
+    user_model = db.query(Users).filter(Users.id == user.get("id")).first()
+    if user_model is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="user not found"
+        )
+
+    user_model.phone_number = phone_number
+    db.commit()
+    return {"message": "Phone Number Update successfully", "data": user_model}

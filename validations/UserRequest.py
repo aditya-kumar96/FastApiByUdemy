@@ -2,12 +2,12 @@ from pydantic import BaseModel,Field, field_validator
 
 class CreateUser(BaseModel):
     email: str = Field(...)
-    username: str =  (Field...)
+    username: str =  Field(...)
     first_name: str
     last_name: str
     password: str = Field(...)
-    role: str = Field(default='user')
-    phone_number : str = Field(... )
+    role: str = Field(default="user")
+    phone_number : str = Field(...)
     
     @field_validator("phone_number")
     @classmethod
