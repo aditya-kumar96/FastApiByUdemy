@@ -21,3 +21,11 @@ Base.metadata.create_all(bind=engine)
 
 #now override the getdb
 
+def override_get_db():
+    db = TestingSessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+        
+
