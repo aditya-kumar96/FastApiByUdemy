@@ -32,3 +32,13 @@ class TodoUpdate(BaseModel):
             raise ValueError("field can not be empty")
         return value
     
+    
+class TodoResponse(BaseModel):
+    title: str
+    description: str
+    priority: int
+    complete: bool
+    owner_id: int
+
+    class Config:
+        from_attributes = True

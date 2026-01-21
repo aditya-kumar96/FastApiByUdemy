@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Path
 
 from models import Todos
-from validations.TodoRequest import TodoRequest, TodoCreate, TodoUpdate
+from validations.TodoRequest import TodoRequest, TodoCreate, TodoUpdate,TodoResponse
 from database import SesssionLocal
 from sqlalchemy.orm import Session
 from typing import Annotated
@@ -25,7 +25,7 @@ user_dependency = Annotated[dict, Depends(get_current_user)]
 
 
 # get all the todos
-@router.get("/")
+@router.get("/",response_model=list[TodoResponse])
 def get_allTodo(user: user_dependency, db: db_dependency):
     if user is None:
         raise HTTPException(
