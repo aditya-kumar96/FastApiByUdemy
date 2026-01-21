@@ -73,7 +73,7 @@ def test_todo():
         connection.commit()
 
 
-# read the authentication of todo
+# read all todo the authentication of todo
 def test_read_all_authenticated(test_todo):
     response = client.get("/todo/")
     assert response.status_code == status.HTTP_200_OK
@@ -86,3 +86,19 @@ def test_read_all_authenticated(test_todo):
             "owner_id": 1,
         }
     ]
+
+
+# read one todo using todo id
+
+
+# read the authentication of todo
+def test_read_one_authenticated(test_todo):
+    response = client.get("/todo/1")
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {
+        "title": "this is the first todo",
+        "description": "this todo creating in postgresql",
+        "priority": 5,
+        "complete": True,
+        "owner_id": 1,
+    }

@@ -35,7 +35,7 @@ def get_allTodo(user: user_dependency, db: db_dependency):
 
 
 # get todo by todo_id
-@router.get("/{todo_id}", status_code=status.HTTP_200_OK)
+@router.get("/{todo_id}", status_code=status.HTTP_200_OK , response_model=TodoResponse)
 async def getTodobyId(
     user: user_dependency, db: db_dependency, todo_id: int = Path(gt=0)
 ):
