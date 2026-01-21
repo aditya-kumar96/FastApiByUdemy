@@ -4,9 +4,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.orm import sessionmaker
-from ..database import Base
-from ..main import app 
-from ..routers.todos import get_db,get_current_user
+from database import Base
+from main import app 
+from routers.todos import get_db,get_current_user
 from fastapi.testclient import TestClient
 from fastapi import status
 # create a new database
@@ -37,7 +37,7 @@ def override_get_db():
 
 #get the current user
 def override_get_current_user():
-    return {"username": "adityak", "id": 1}
+    return {"username": "adityak3", "id": 1}
 
 
 app.dependency_overrides[get_db] = override_get_db
@@ -48,5 +48,5 @@ client = TestClient(app)
 
 
 def test_read_all_authenticated():
-    response = client.get("/")
+    response = client.get("/todo/")
     assert response.status_code == status.HTTP_200_OK

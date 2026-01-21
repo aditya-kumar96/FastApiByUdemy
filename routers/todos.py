@@ -31,7 +31,7 @@ def get_allTodo(user: user_dependency, db: db_dependency):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Authenticate first"
         )
-    return db.query(Todos).filter(Todos.owner == user.get("id")).all()
+    return db.query(Todos).filter(Todos.owner_id == user.get("id")).all()
 
 
 # get todo by todo_id
