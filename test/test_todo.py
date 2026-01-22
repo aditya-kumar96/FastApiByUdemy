@@ -126,9 +126,20 @@ def test_create_todo(test_todo):
     db = TestingSessionLocal()
     #after creating todo now just fetch to check whether all information are same or not
     model = db.query(Todos).filter(Todos.id == 2).first()
-    assert model.title == request_data.get('titile')
+    assert model.title == request_data.get('title')
     assert model.description == request_data.get('description')
     assert model.priority == request_data.get('priority')
     assert model.complete == request_data.get('complete')
     
+    
+def test_update_todo(test_todo):
+    request_data = {
+        'title':'Change the title of data which already saved !',
+        'description':'should be updated',
+        'priority':3,
+        'complete':False
+    }
+    
+    response = client.patch('/todo/updatetodo',json=request_data)
+    assert response.status_code == status.HTTP_200_OK
     
