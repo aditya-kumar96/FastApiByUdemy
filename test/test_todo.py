@@ -102,3 +102,33 @@ def test_read_one_authenticated(test_todo):
         "complete": True,
         "owner_id": 1,
     }
+
+
+# todo not found 
+
+def test_read_one_authenticated_not_found(test_todo):
+    response = client.get("/todo/93")
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert response.json()
+     
+     
+#test the create todo
+def test_create_todo(test_todo):
+    request_data = {
+        'title':'New TOdo!',
+        'description':'New todo description',
+        'priority':5,
+        'complete':True
+    }
+    
+    response = client.post('/todo/createTodo',json=request_data)
+    assert response.status_code == status.HTTP_201_CREATED
+    db = TestingSessionLocal()
+    #after creating todo now just fetch to check whether all information are same or not
+    model = db.query(Todos).filter(Todos.id == 2).first()
+    assert model.title == request_data.get('titile')
+    assert model.description == request_data.get('description')
+    assert model.priority == request_data.get('priority')
+    assert model.complete == request_data.get('complete')
+    
+    
