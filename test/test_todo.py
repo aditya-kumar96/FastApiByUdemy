@@ -140,6 +140,12 @@ def test_update_todo(test_todo):
         'complete':False
     }
     
-    response = client.patch('/todo/updatetodo',json=request_data)
+    response = client.patch('/todo/updatetodo/1',json=request_data)
     assert response.status_code == status.HTTP_200_OK
+    db = TestingSessionLocal()
+    model = db.query(Todos).filter(Todos.id == 1).first()
+    assert model.title == 'Change the title of data which already saved !'
+    assert model.description == 'should be updated'
+    assert model.priority == 3
+    assert model.complete == False
     
