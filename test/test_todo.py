@@ -149,3 +149,22 @@ def test_update_todo(test_todo):
     assert model.priority == 3
     assert model.complete == False
     
+    
+#now test for delete todo
+
+def test_delete_todo(test_todo):
+    response = client.delete("/todo/deletetodo/1")
+    assert response.status_code == 204
+    db = TestingSessionLocal()
+    model = db.query(Todos).filter(Todos.id == 1).first()
+    assert model is None
+    
+    
+#now test for delete todo
+
+def test_delete_todo_not_found():
+    response = client.delete("/todo/deletetodo/1333")
+    assert response.status_code == 404
+    assert response.json() == {
+        "detail":"Todo not found"
+    }
