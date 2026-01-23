@@ -16,9 +16,16 @@ def test_return_user(test_users):
 
 #change password
 def test_change_password_success(test_users):
-    response = client.put("/user/password",json={"password":"testpass","new_password":"newtestpass"})
+    response = client.patch("/users/change_password",json={"old_password":"testpass","new_password":"newtestpass"})
     assert response.status_code == status.HTTP_200_OK
     
+    
+#now to if change password not work
+
+def test_change_password_invalid_current_password(test_users):
+    response = client.patch("/users/change_password",json={"old_password":"passsss","new_password":"newtestpass"})
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert response.json() ==  {'detail':"Old password is incorrect"}
     
     
     
