@@ -104,7 +104,6 @@ def test_delete_todo(test_todo):
     
     
 #now test for delete todo
-
 def test_delete_todo_not_found():
     response = client.delete("/todo/deletetodo/1333")
     assert response.status_code == 404
