@@ -39,7 +39,7 @@ def override_get_db():
 
 # get the current user
 def override_get_current_user():
-    return {"username": "adityak3", "id": 1}
+    return {"username": "adityak3", "id": 1,"role":"admin"}
 
 
 
