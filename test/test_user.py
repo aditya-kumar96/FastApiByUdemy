@@ -13,3 +13,13 @@ def test_return_user(test_users):
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["username"] == "user"
     assert response.json()["email"] == "user@gmail.com"
+
+#change password
+def test_change_password_success(test_users):
+    response = client.put("/user/password",json={"password":"testpass","new_password":"newtestpass"})
+    assert response.status_code == status.HTTP_200_OK
+    
+    
+    
+    
+    
