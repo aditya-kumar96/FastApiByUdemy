@@ -67,3 +67,6 @@ async def test_get_current_user_missing_payload():
         
     assert excinfo.value.status_code == 401
     assert excinfo.value.detail == 'Could not validate user'
+    
+    
+    #Testing Done
