@@ -33,4 +33,3 @@ def test_change_phone_number_success(test_users):
     response = client.put('/users/update_phonenumber',params={'phone_number':'8727191918'})
     assert response.status_code ==  status.HTTP_200_OK
     
-    
